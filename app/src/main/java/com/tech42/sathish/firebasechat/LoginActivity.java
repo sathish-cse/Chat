@@ -1,6 +1,7 @@
 package com.tech42.sathish.firebasechat;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -26,15 +27,11 @@ public class LoginActivity extends AppCompatActivity{
     private EditText email,password;
     private Button login,register;
 
-    //Signin button
-    private SignInButton signInButton;
-
-
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
 
     private AlertDialog alertDialog;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +41,7 @@ public class LoginActivity extends AppCompatActivity{
         password = (EditText)findViewById(R.id.password);
         login = (Button)findViewById(R.id.login);
         register = (Button)findViewById(R.id.register);
+
         // Get Instance for firebase authentication
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -65,6 +63,12 @@ public class LoginActivity extends AppCompatActivity{
             }
         });
 
+        if(firebaseAuth.getCurrentUser()!=null ) {
+            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
     private void onLoginUser() {
@@ -77,13 +81,17 @@ public class LoginActivity extends AppCompatActivity{
 
     private void logIn(String email, String password) {
 
-        showAlertDialog("Log In...",false);
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Log in..");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
 
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
-                dismissAlertDialog();
+                progressDialog.dismiss();
 
                 if(task.isSuccessful()){
                     setUserOnline();
