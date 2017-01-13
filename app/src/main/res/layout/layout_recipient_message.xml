@@ -3,19 +3,46 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="2dp"
+        android:orientation="vertical"
+        android:id="@+id/message_content"
+        android:background="@drawable/recipient_rounded_corners">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:id="@+id/image_view_recipient_message"/>
+
     <TextView
         android:id="@+id/text_view_recipient_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Hi. How are you?"
-        android:padding="8dp"
         android:textStyle="bold"
-        android:layout_marginRight="60dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="2dp"
         android:textColor="#727272"
         android:textSize="14sp"
         android:background="@drawable/recipient_rounded_corners"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="recipient_time"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/message_content"
+        android:layout_marginTop="5dp"
+        android:textSize="13dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/time_recipient_message"/>
 
 </RelativeLayout>
