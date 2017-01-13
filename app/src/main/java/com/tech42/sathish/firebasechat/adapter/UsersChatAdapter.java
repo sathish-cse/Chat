@@ -2,10 +2,14 @@ package com.tech42.sathish.firebasechat.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +23,7 @@ import com.tech42.sathish.firebasechat.FireChatHelper.ExtraIntent;
 import com.tech42.sathish.firebasechat.R;
 import com.tech42.sathish.firebasechat.model.User;
 
+import java.io.IOException;
 import java.util.List;
 
 public class UsersChatAdapter extends RecyclerView.Adapter<UsersChatAdapter.ViewHolderUsers> {
@@ -27,7 +32,7 @@ public class UsersChatAdapter extends RecyclerView.Adapter<UsersChatAdapter.View
     public static final String OFFLINE = "offline";
     private List<User> mUsers;
     private Context mContext;
-    private String mCurrentUserEmail;
+    private String mCurrentUserEmail,mcurrentUserUrl;
     private Long mCurrentUserCreatedAt;
     private String mCurrentUserId;
 
@@ -46,10 +51,20 @@ public class UsersChatAdapter extends RecyclerView.Adapter<UsersChatAdapter.View
 
         User fireChatUser = mUsers.get(position);
 
+        // Set Avatar
+       try {
+            Bitmap image = decodeFromFirebaseBase64(fireChatUser.getImageUrl());
+            holder.getUserAvatar().setImageBitmap(image);
+        }
+        catch(IOException i)
+        {
+            Log.e("IO ERROR : ",i.getMessage());
+        }
+
         // Set avatar
-        int userAvatarId= ChatHelper.getDrawableAvatarId(fireChatUser.getAvatarId());
+     /*   int userAvatarId= ChatHelper.getDrawableAvatarId(fireChatUser.getAvatarId());
         Drawable avatarDrawable = ContextCompat.getDrawable(mContext,userAvatarId);
-        holder.getUserAvatar().setImageDrawable(avatarDrawable);
+        holder.getUserAvatar().setImageDrawable(avatarDrawable);*/
 
         // Set display name
         holder.getUserDisplayName().setText(fireChatUser.getDisplayName());
@@ -82,6 +97,13 @@ public class UsersChatAdapter extends RecyclerView.Adapter<UsersChatAdapter.View
         mUsers.set(index,user);
         notifyDataSetChanged();
     }
+
+   /* public void setCurrentUserInfo(String userUid, String email, long createdAt,String imageUrl) {
+        mCurrentUserId = userUid;
+        mCurrentUserEmail = email;
+        mCurrentUserCreatedAt = createdAt;
+        mcurrentUserUrl = imageUrl;
+    }*/
 
     public void setCurrentUserInfo(String userUid, String email, long createdAt) {
         mCurrentUserId = userUid;
@@ -142,4 +164,9 @@ public class UsersChatAdapter extends RecyclerView.Adapter<UsersChatAdapter.View
         }
     }
 
+    // String decode to bitmap
+    public static Bitmap decodeFromFirebaseBase64(String image) throws IOException {
+        byte[] decodedByteArray = android.util.Base64.decode(image, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+    }
 }

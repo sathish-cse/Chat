@@ -11,18 +11,20 @@ public class User {
     private String connection;
     private int avatarId;
     private long createdAt;
+    private String imageUrl;
 
     private String mRecipientId;
 
     public User() {
     }
 
-    public User(String displayName, String email, String connection, int avatarId, long createdAt) {
+    public User(String displayName, String email, String connection, int avatarId, long createdAt,String imageUrl) {
         this.displayName = displayName;
         this.email = email;
         this.connection = connection;
         this.avatarId = avatarId;
         this.createdAt = createdAt;
+        this.imageUrl = imageUrl;
     }
 
 
@@ -31,7 +33,6 @@ public class User {
         if(createdAtCurrentUser > getCreatedAt()){
             uniqueChatRef = cleanEmailAddress(currentUserEmail)+"-"+cleanEmailAddress(getUserEmail());
         }else {
-
             uniqueChatRef=cleanEmailAddress(getUserEmail())+"-"+cleanEmailAddress(currentUserEmail);
         }
         return uniqueChatRef;
@@ -66,6 +67,9 @@ public class User {
     public int getAvatarId() {
         return avatarId;
     }
+
+    public String getImageUrl()
+    {return imageUrl;}
 
     @Exclude
     public String getRecipientId() {

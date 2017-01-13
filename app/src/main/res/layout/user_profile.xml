@@ -1,37 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:orientation="vertical"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            tools:src="@drawable/headshot_7"
+            android:layout_margin="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical">
+
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-    android:background="#FFFFFF">
+                android:layout_height="0dp"
+                android:layout_weight="0.5"/>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/img_avatar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        tools:src="@drawable/headshot_7"
-        android:layout_margin="10dp"/>
+            <TextView
+                android:id="@+id/text_view_display_name"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:text="Sathish"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:textColor="@color/text_color_icon" />
 
-    <TextView
-        android:id="@+id/text_view_display_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Marcelino"
-        android:textStyle="bold"
-        android:textColor="@color/text_color_icon"
-        android:layout_alignBottom="@+id/img_avatar"
-        android:layout_toEndOf="@+id/img_avatar"
-        android:layout_marginBottom="26dp"/>
+            <TextView
+                android:id="@+id/text_view_connection_status"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:textSize="12dp"
+                android:layout_weight="1"
+                tools:text="Online" />
 
-    <TextView
-        android:id="@+id/text_view_connection_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Online"
-        android:layout_alignTop="@+id/img_avatar"
-        android:paddingEnd="@dimen/connection_status_padding"
-        android:layout_alignParentEnd="true"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"/>
 
-</RelativeLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</android.support.v7.widget.CardView>

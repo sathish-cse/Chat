@@ -48,12 +48,18 @@ public class MainActivity extends AppCompatActivity {
         mProgressBarForUsers = (ProgressBar)findViewById(R.id.progress_bar_users);
         mUsersRecyclerView = (RecyclerView)findViewById(R.id.recycler_view_users);
 
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Fetching User Details..");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
         setAuthInstance();
         setUsersDatabase();
         setUserRecyclerView();
         setUsersKeyList();
         setAuthListener();
 
+        progressDialog.dismiss();
     }
 
     private void setAuthInstance() {
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private void setUsersDatabase() {
         mUserRefDatabase = FirebaseDatabase.getInstance().getReference().child("users");
     }
+
     private void setUserRecyclerView() {
         mUsersChatAdapter = new UsersChatAdapter(this, new ArrayList<User>());
         mUsersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -189,6 +196,8 @@ public class MainActivity extends AppCompatActivity {
                     if(dataSnapshot.getKey().equals(mCurrentUserUid)){
                         User currentUser = dataSnapshot.getValue(User.class);
                         mUsersChatAdapter.setCurrentUserInfo(userUid, currentUser.getEmail(), currentUser.getCreatedAt());
+                    //                        mUsersChatAdapter.setCurrentUserInfo(userUid, currentUser.getEmail(), currentUser.getCreatedAt(),currentUser.getImageUrl());
+
                     }else {
                         User recipient = dataSnapshot.getValue(User.class);
                         recipient.setRecipientId(userUid);

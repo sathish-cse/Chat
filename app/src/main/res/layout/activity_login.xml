@@ -53,14 +53,6 @@
         android:id="@+id/register"
         android:text="Register"/>
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/sign_in_google"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:visibility="visible"
-            android:layout_gravity="center"/>
-
     </LinearLayout>
 
 </RelativeLayout>

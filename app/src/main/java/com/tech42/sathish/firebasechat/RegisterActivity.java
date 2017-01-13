@@ -5,12 +5,16 @@ import android.app.ProgressDialog;
 import android.content.Context;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,16 +27,19 @@ import com.tech42.sathish.firebasechat.FireChatHelper.ChatHelper;
 import com.tech42.sathish.firebasechat.adapter.UsersChatAdapter;
 import com.tech42.sathish.firebasechat.model.User;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Date;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText displayname,email,password;
-    private Button register;
+    private Button register,image;
+    private ImageView image_avatar;
     private AlertDialog alertDialog;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
-
+    private String imageEncoded;
+    private static final int REQUEST_IMAGE_CAPTURE = 111;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,8 @@ public class RegisterActivity extends AppCompatActivity {
         password = (EditText)findViewById(R.id.password);
         displayname = (EditText)findViewById(R.id.displayname);
         register = (Button)findViewById(R.id.register);
+        image = (Button) findViewById(R.id.image);
+        image_avatar = (ImageView) findViewById(R.id.img_avatar);
 
         // Get Instance for firebase authentication
         firebaseAuth = FirebaseAuth.getInstance();
@@ -58,6 +67,12 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onLaunchCamera();
+            }
+        });
 
     }
 
@@ -82,6 +97,11 @@ public class RegisterActivity extends AppCompatActivity {
     // Get Password
     private String getUserPassword() {
         return password.getText().toString().trim();
+    }
+
+    // Get Password
+    private String getImageUrl() {
+        return imageEncoded;
     }
 
     // Check Email format
@@ -159,7 +179,37 @@ public class RegisterActivity extends AppCompatActivity {
                 getUserEmail(),
                 UsersChatAdapter.ONLINE,
                 ChatHelper.generateRandomAvatarForUser(),
-                new Date().getTime()
+                new Date().getTime(),
+                getImageUrl()
         );
     }
+
+
+
+    /*-------------------- Image upload to the firebase ------------------------------*/
+
+    public void onLaunchCamera() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getApplicationContext().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            image_avatar.setImageBitmap(imageBitmap);
+            encodeBitmapAndSaveToFirebase(imageBitmap);
+        }
+    }
+
+    public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+    }
+
+
 }

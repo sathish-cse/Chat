@@ -20,4 +20,5 @@
         android:layout_alignParentEnd="true"
         android:background="@drawable/sender_rounded_corners"/>
 
+
 </RelativeLayout>
