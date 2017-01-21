@@ -100,7 +100,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        messageChatListener = messageChatDatabase.limitToFirst(20).addChildEventListener(new ChildEventListener() {
+        messageChatListener = messageChatDatabase.limitToLast(20).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildKey) {
 
@@ -182,5 +182,15 @@ public class ChatActivity extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return df.format(c.getTime());
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(messageChatListener != null) {
+            messageChatDatabase.removeEventListener(messageChatListener);
+        }
+        messageChatAdapter.cleanUp();
+        finish();
     }
 }

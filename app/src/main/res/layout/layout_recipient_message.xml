@@ -29,8 +29,7 @@
         tools:text="Hi. How are you?"
         android:textStyle="bold"
         android:textColor="#727272"
-        android:textSize="14sp"
-        android:background="@drawable/recipient_rounded_corners"/>
+        android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -38,11 +37,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="recipient_time"
-        android:layout_alignParentEnd="true"
         android:layout_below="@+id/message_content"
         android:layout_marginTop="5dp"
         android:textSize="13dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         android:id="@+id/time_recipient_message"/>
 
 </RelativeLayout>
